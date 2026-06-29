@@ -7,26 +7,39 @@ import { errorMiddleware } from "./middleware/error.middleware";
 
 const app = express();
 
-// Security & Basic Middlewares
+// ====================== GLOBAL MIDDLEWARES ======================
+
+// Security
 app.use(helmet());
-app.use(cors({ origin: config.frontendUrl, credentials: true }));
+
+// CORS
+app.use(
+  cors({
+    origin: config.frontendUrl,
+    credentials: true,
+  }),
+);
+
+// Logging
 app.use(morgan(config.nodeEnv === "development" ? "dev" : "combined"));
+
+// Body Parser
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// API Routes
+// ====================== ROUTES ======================
 // app.use("/api/v1/complaints", complaintRoutes);
-// app.use("/api/v1/admin", adminRoutes);
 
 // Health Check
-app.get("/health", (req, res) =>
-  res.status(200).json({ status: "healthy", uptime: process.uptime() }),
-);
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "CampusEcho Backend is running smoothly!",
+    timestamp: new Date().toISOString(),
+  });
+});
 
-app.get("/", (req, res) =>
-  res.status(200).json({ message: "Welcome to CampusEcho API" }),
-);
-// Global Error Handler
+// Global Error Handler (সবার শেষে রাখতে হবে)
 app.use(errorMiddleware);
 
 export default app;
