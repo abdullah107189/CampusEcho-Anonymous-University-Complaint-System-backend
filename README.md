@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-# campusecho-backend
-
-To install dependencies:
-=======
 # CampusEcho - Anonymous University Complaint System
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
@@ -353,21 +348,11 @@ git clone https://github.com/your-username/campusecho-backend.git
 ---
 
 ## Install Dependencies
->>>>>>> 982ff83867952178f141d239e2334ccb07d21d4e
 
 ```bash
 bun install
 ```
 
-<<<<<<< HEAD
-To run:
-
-```bash
-bun run index.js
-```
-
-This project was created using `bun init` in bun v1.3.13. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
-=======
 or
 
 ```bash
@@ -516,4 +501,3 @@ Bangladesh
 ---
 
 ## ⭐ If you like this project, don't forget to give it a Star!
->>>>>>> 982ff83867952178f141d239e2334ccb07d21d4e
