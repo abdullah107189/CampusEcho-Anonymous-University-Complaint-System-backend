@@ -51,8 +51,10 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Category: 'Category',
-  Complaint: 'Complaint'
+  User: 'User',
+  Complaint: 'Complaint',
+  Note: 'Note',
+  StatusHistory: 'StatusHistory'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -71,30 +73,57 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const CategoryScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  createdAt: 'createdAt'
+  email: 'email',
+  password: 'password',
+  role: 'role',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const ComplaintScalarFieldEnum = {
   id: 'id',
-  trackingCode: 'trackingCode',
+  trackingId: 'trackingId',
   title: 'title',
   description: 'description',
-  categoryId: 'categoryId',
+  category: 'category',
   status: 'status',
-  incidentDate: 'incidentDate',
-  location: 'location',
-  evidenceUrl: 'evidenceUrl',
+  priority: 'priority',
+  attachment: 'attachment',
+  assignedToId: 'assignedToId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ComplaintScalarFieldEnum = (typeof ComplaintScalarFieldEnum)[keyof typeof ComplaintScalarFieldEnum]
+
+
+export const NoteScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  complaintId: 'complaintId',
+  addedById: 'addedById',
+  createdAt: 'createdAt'
+} as const
+
+export type NoteScalarFieldEnum = (typeof NoteScalarFieldEnum)[keyof typeof NoteScalarFieldEnum]
+
+
+export const StatusHistoryScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  complaintId: 'complaintId',
+  changedById: 'changedById',
+  changedAt: 'changedAt'
+} as const
+
+export type StatusHistoryScalarFieldEnum = (typeof StatusHistoryScalarFieldEnum)[keyof typeof StatusHistoryScalarFieldEnum]
 
 
 export const SortOrder = {

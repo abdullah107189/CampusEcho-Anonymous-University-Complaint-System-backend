@@ -20,114 +20,92 @@ export type ComplaintModel = runtime.Types.Result.DefaultSelection<Prisma.$Compl
 
 export type AggregateComplaint = {
   _count: ComplaintCountAggregateOutputType | null
-  _avg: ComplaintAvgAggregateOutputType | null
-  _sum: ComplaintSumAggregateOutputType | null
   _min: ComplaintMinAggregateOutputType | null
   _max: ComplaintMaxAggregateOutputType | null
 }
 
-export type ComplaintAvgAggregateOutputType = {
-  id: number | null
-  categoryId: number | null
-}
-
-export type ComplaintSumAggregateOutputType = {
-  id: number | null
-  categoryId: number | null
-}
-
 export type ComplaintMinAggregateOutputType = {
-  id: number | null
-  trackingCode: string | null
+  id: string | null
+  trackingId: string | null
   title: string | null
   description: string | null
-  categoryId: number | null
-  status: string | null
-  incidentDate: Date | null
-  location: string | null
-  evidenceUrl: string | null
+  category: $Enums.Category | null
+  status: $Enums.Status | null
+  priority: $Enums.Priority | null
+  attachment: string | null
+  assignedToId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type ComplaintMaxAggregateOutputType = {
-  id: number | null
-  trackingCode: string | null
+  id: string | null
+  trackingId: string | null
   title: string | null
   description: string | null
-  categoryId: number | null
-  status: string | null
-  incidentDate: Date | null
-  location: string | null
-  evidenceUrl: string | null
+  category: $Enums.Category | null
+  status: $Enums.Status | null
+  priority: $Enums.Priority | null
+  attachment: string | null
+  assignedToId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type ComplaintCountAggregateOutputType = {
   id: number
-  trackingCode: number
+  trackingId: number
   title: number
   description: number
-  categoryId: number
+  category: number
   status: number
-  incidentDate: number
-  location: number
-  evidenceUrl: number
+  priority: number
+  attachment: number
+  assignedToId: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
 
-export type ComplaintAvgAggregateInputType = {
-  id?: true
-  categoryId?: true
-}
-
-export type ComplaintSumAggregateInputType = {
-  id?: true
-  categoryId?: true
-}
-
 export type ComplaintMinAggregateInputType = {
   id?: true
-  trackingCode?: true
+  trackingId?: true
   title?: true
   description?: true
-  categoryId?: true
+  category?: true
   status?: true
-  incidentDate?: true
-  location?: true
-  evidenceUrl?: true
+  priority?: true
+  attachment?: true
+  assignedToId?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type ComplaintMaxAggregateInputType = {
   id?: true
-  trackingCode?: true
+  trackingId?: true
   title?: true
   description?: true
-  categoryId?: true
+  category?: true
   status?: true
-  incidentDate?: true
-  location?: true
-  evidenceUrl?: true
+  priority?: true
+  attachment?: true
+  assignedToId?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type ComplaintCountAggregateInputType = {
   id?: true
-  trackingCode?: true
+  trackingId?: true
   title?: true
   description?: true
-  categoryId?: true
+  category?: true
   status?: true
-  incidentDate?: true
-  location?: true
-  evidenceUrl?: true
+  priority?: true
+  attachment?: true
+  assignedToId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -171,18 +149,6 @@ export type ComplaintAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: ComplaintAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: ComplaintSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: ComplaintMinAggregateInputType
@@ -213,27 +179,23 @@ export type ComplaintGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: ComplaintCountAggregateInputType | true
-  _avg?: ComplaintAvgAggregateInputType
-  _sum?: ComplaintSumAggregateInputType
   _min?: ComplaintMinAggregateInputType
   _max?: ComplaintMaxAggregateInputType
 }
 
 export type ComplaintGroupByOutputType = {
-  id: number
-  trackingCode: string
+  id: string
+  trackingId: string
   title: string
   description: string
-  categoryId: number
-  status: string
-  incidentDate: Date | null
-  location: string | null
-  evidenceUrl: string | null
+  category: $Enums.Category
+  status: $Enums.Status
+  priority: $Enums.Priority
+  attachment: string | null
+  assignedToId: string | null
   createdAt: Date
   updatedAt: Date
   _count: ComplaintCountAggregateOutputType | null
-  _avg: ComplaintAvgAggregateOutputType | null
-  _sum: ComplaintSumAggregateOutputType | null
   _min: ComplaintMinAggregateOutputType | null
   _max: ComplaintMaxAggregateOutputType | null
 }
@@ -257,179 +219,194 @@ export type ComplaintWhereInput = {
   AND?: Prisma.ComplaintWhereInput | Prisma.ComplaintWhereInput[]
   OR?: Prisma.ComplaintWhereInput[]
   NOT?: Prisma.ComplaintWhereInput | Prisma.ComplaintWhereInput[]
-  id?: Prisma.IntFilter<"Complaint"> | number
-  trackingCode?: Prisma.StringFilter<"Complaint"> | string
+  id?: Prisma.StringFilter<"Complaint"> | string
+  trackingId?: Prisma.StringFilter<"Complaint"> | string
   title?: Prisma.StringFilter<"Complaint"> | string
   description?: Prisma.StringFilter<"Complaint"> | string
-  categoryId?: Prisma.IntFilter<"Complaint"> | number
-  status?: Prisma.StringFilter<"Complaint"> | string
-  incidentDate?: Prisma.DateTimeNullableFilter<"Complaint"> | Date | string | null
-  location?: Prisma.StringNullableFilter<"Complaint"> | string | null
-  evidenceUrl?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  category?: Prisma.EnumCategoryFilter<"Complaint"> | $Enums.Category
+  status?: Prisma.EnumStatusFilter<"Complaint"> | $Enums.Status
+  priority?: Prisma.EnumPriorityFilter<"Complaint"> | $Enums.Priority
+  attachment?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  assignedToId?: Prisma.StringNullableFilter<"Complaint"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
+  assignedTo?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  notes?: Prisma.NoteListRelationFilter
+  statusHistory?: Prisma.StatusHistoryListRelationFilter
 }
 
 export type ComplaintOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  trackingCode?: Prisma.SortOrder
+  trackingId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  incidentDate?: Prisma.SortOrderInput | Prisma.SortOrder
-  location?: Prisma.SortOrderInput | Prisma.SortOrder
-  evidenceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  attachment?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignedToId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  category?: Prisma.CategoryOrderByWithRelationInput
+  assignedTo?: Prisma.UserOrderByWithRelationInput
+  notes?: Prisma.NoteOrderByRelationAggregateInput
+  statusHistory?: Prisma.StatusHistoryOrderByRelationAggregateInput
 }
 
 export type ComplaintWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
-  trackingCode?: string
+  id?: string
+  trackingId?: string
   AND?: Prisma.ComplaintWhereInput | Prisma.ComplaintWhereInput[]
   OR?: Prisma.ComplaintWhereInput[]
   NOT?: Prisma.ComplaintWhereInput | Prisma.ComplaintWhereInput[]
   title?: Prisma.StringFilter<"Complaint"> | string
   description?: Prisma.StringFilter<"Complaint"> | string
-  categoryId?: Prisma.IntFilter<"Complaint"> | number
-  status?: Prisma.StringFilter<"Complaint"> | string
-  incidentDate?: Prisma.DateTimeNullableFilter<"Complaint"> | Date | string | null
-  location?: Prisma.StringNullableFilter<"Complaint"> | string | null
-  evidenceUrl?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  category?: Prisma.EnumCategoryFilter<"Complaint"> | $Enums.Category
+  status?: Prisma.EnumStatusFilter<"Complaint"> | $Enums.Status
+  priority?: Prisma.EnumPriorityFilter<"Complaint"> | $Enums.Priority
+  attachment?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  assignedToId?: Prisma.StringNullableFilter<"Complaint"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
-}, "id" | "trackingCode">
+  assignedTo?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  notes?: Prisma.NoteListRelationFilter
+  statusHistory?: Prisma.StatusHistoryListRelationFilter
+}, "id" | "trackingId">
 
 export type ComplaintOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  trackingCode?: Prisma.SortOrder
+  trackingId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  incidentDate?: Prisma.SortOrderInput | Prisma.SortOrder
-  location?: Prisma.SortOrderInput | Prisma.SortOrder
-  evidenceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  attachment?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignedToId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ComplaintCountOrderByAggregateInput
-  _avg?: Prisma.ComplaintAvgOrderByAggregateInput
   _max?: Prisma.ComplaintMaxOrderByAggregateInput
   _min?: Prisma.ComplaintMinOrderByAggregateInput
-  _sum?: Prisma.ComplaintSumOrderByAggregateInput
 }
 
 export type ComplaintScalarWhereWithAggregatesInput = {
   AND?: Prisma.ComplaintScalarWhereWithAggregatesInput | Prisma.ComplaintScalarWhereWithAggregatesInput[]
   OR?: Prisma.ComplaintScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ComplaintScalarWhereWithAggregatesInput | Prisma.ComplaintScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"Complaint"> | number
-  trackingCode?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
+  id?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
+  trackingId?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
   title?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
   description?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
-  categoryId?: Prisma.IntWithAggregatesFilter<"Complaint"> | number
-  status?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
-  incidentDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Complaint"> | Date | string | null
-  location?: Prisma.StringNullableWithAggregatesFilter<"Complaint"> | string | null
-  evidenceUrl?: Prisma.StringNullableWithAggregatesFilter<"Complaint"> | string | null
+  category?: Prisma.EnumCategoryWithAggregatesFilter<"Complaint"> | $Enums.Category
+  status?: Prisma.EnumStatusWithAggregatesFilter<"Complaint"> | $Enums.Status
+  priority?: Prisma.EnumPriorityWithAggregatesFilter<"Complaint"> | $Enums.Priority
+  attachment?: Prisma.StringNullableWithAggregatesFilter<"Complaint"> | string | null
+  assignedToId?: Prisma.StringNullableWithAggregatesFilter<"Complaint"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Complaint"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Complaint"> | Date | string
 }
 
 export type ComplaintCreateInput = {
-  trackingCode: string
+  id?: string
+  trackingId: string
   title: string
   description: string
-  status?: string
-  incidentDate?: Date | string | null
-  location?: string | null
-  evidenceUrl?: string | null
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  category: Prisma.CategoryCreateNestedOneWithoutComplaintsInput
+  assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedComplaintsInput
+  notes?: Prisma.NoteCreateNestedManyWithoutComplaintInput
+  statusHistory?: Prisma.StatusHistoryCreateNestedManyWithoutComplaintInput
 }
 
 export type ComplaintUncheckedCreateInput = {
-  id?: number
-  trackingCode: string
+  id?: string
+  trackingId: string
   title: string
   description: string
-  categoryId: number
-  status?: string
-  incidentDate?: Date | string | null
-  location?: string | null
-  evidenceUrl?: string | null
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
+  assignedToId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  notes?: Prisma.NoteUncheckedCreateNestedManyWithoutComplaintInput
+  statusHistory?: Prisma.StatusHistoryUncheckedCreateNestedManyWithoutComplaintInput
 }
 
 export type ComplaintUpdateInput = {
-  trackingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  incidentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  category?: Prisma.CategoryUpdateOneRequiredWithoutComplaintsNestedInput
+  assignedTo?: Prisma.UserUpdateOneWithoutAssignedComplaintsNestedInput
+  notes?: Prisma.NoteUpdateManyWithoutComplaintNestedInput
+  statusHistory?: Prisma.StatusHistoryUpdateManyWithoutComplaintNestedInput
 }
 
 export type ComplaintUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  trackingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  incidentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NoteUncheckedUpdateManyWithoutComplaintNestedInput
+  statusHistory?: Prisma.StatusHistoryUncheckedUpdateManyWithoutComplaintNestedInput
 }
 
 export type ComplaintCreateManyInput = {
-  id?: number
-  trackingCode: string
+  id?: string
+  trackingId: string
   title: string
   description: string
-  categoryId: number
-  status?: string
-  incidentDate?: Date | string | null
-  location?: string | null
-  evidenceUrl?: string | null
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
+  assignedToId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type ComplaintUpdateManyMutationInput = {
-  trackingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  incidentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ComplaintUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  trackingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  incidentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -446,312 +423,551 @@ export type ComplaintOrderByRelationAggregateInput = {
 
 export type ComplaintCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  trackingCode?: Prisma.SortOrder
+  trackingId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  incidentDate?: Prisma.SortOrder
-  location?: Prisma.SortOrder
-  evidenceUrl?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  attachment?: Prisma.SortOrder
+  assignedToId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
-export type ComplaintAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
-}
-
 export type ComplaintMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  trackingCode?: Prisma.SortOrder
+  trackingId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  incidentDate?: Prisma.SortOrder
-  location?: Prisma.SortOrder
-  evidenceUrl?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  attachment?: Prisma.SortOrder
+  assignedToId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ComplaintMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  trackingCode?: Prisma.SortOrder
+  trackingId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  incidentDate?: Prisma.SortOrder
-  location?: Prisma.SortOrder
-  evidenceUrl?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  attachment?: Prisma.SortOrder
+  assignedToId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
-export type ComplaintSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+export type ComplaintScalarRelationFilter = {
+  is?: Prisma.ComplaintWhereInput
+  isNot?: Prisma.ComplaintWhereInput
 }
 
-export type ComplaintCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput> | Prisma.ComplaintCreateWithoutCategoryInput[] | Prisma.ComplaintUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutCategoryInput | Prisma.ComplaintCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.ComplaintCreateManyCategoryInputEnvelope
+export type ComplaintCreateNestedManyWithoutAssignedToInput = {
+  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutAssignedToInput, Prisma.ComplaintUncheckedCreateWithoutAssignedToInput> | Prisma.ComplaintCreateWithoutAssignedToInput[] | Prisma.ComplaintUncheckedCreateWithoutAssignedToInput[]
+  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutAssignedToInput | Prisma.ComplaintCreateOrConnectWithoutAssignedToInput[]
+  createMany?: Prisma.ComplaintCreateManyAssignedToInputEnvelope
   connect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
 }
 
-export type ComplaintUncheckedCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput> | Prisma.ComplaintCreateWithoutCategoryInput[] | Prisma.ComplaintUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutCategoryInput | Prisma.ComplaintCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.ComplaintCreateManyCategoryInputEnvelope
+export type ComplaintUncheckedCreateNestedManyWithoutAssignedToInput = {
+  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutAssignedToInput, Prisma.ComplaintUncheckedCreateWithoutAssignedToInput> | Prisma.ComplaintCreateWithoutAssignedToInput[] | Prisma.ComplaintUncheckedCreateWithoutAssignedToInput[]
+  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutAssignedToInput | Prisma.ComplaintCreateOrConnectWithoutAssignedToInput[]
+  createMany?: Prisma.ComplaintCreateManyAssignedToInputEnvelope
   connect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
 }
 
-export type ComplaintUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput> | Prisma.ComplaintCreateWithoutCategoryInput[] | Prisma.ComplaintUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutCategoryInput | Prisma.ComplaintCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.ComplaintUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ComplaintUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.ComplaintCreateManyCategoryInputEnvelope
+export type ComplaintUpdateManyWithoutAssignedToNestedInput = {
+  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutAssignedToInput, Prisma.ComplaintUncheckedCreateWithoutAssignedToInput> | Prisma.ComplaintCreateWithoutAssignedToInput[] | Prisma.ComplaintUncheckedCreateWithoutAssignedToInput[]
+  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutAssignedToInput | Prisma.ComplaintCreateOrConnectWithoutAssignedToInput[]
+  upsert?: Prisma.ComplaintUpsertWithWhereUniqueWithoutAssignedToInput | Prisma.ComplaintUpsertWithWhereUniqueWithoutAssignedToInput[]
+  createMany?: Prisma.ComplaintCreateManyAssignedToInputEnvelope
   set?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
   disconnect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
   delete?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
   connect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  update?: Prisma.ComplaintUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ComplaintUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.ComplaintUpdateManyWithWhereWithoutCategoryInput | Prisma.ComplaintUpdateManyWithWhereWithoutCategoryInput[]
+  update?: Prisma.ComplaintUpdateWithWhereUniqueWithoutAssignedToInput | Prisma.ComplaintUpdateWithWhereUniqueWithoutAssignedToInput[]
+  updateMany?: Prisma.ComplaintUpdateManyWithWhereWithoutAssignedToInput | Prisma.ComplaintUpdateManyWithWhereWithoutAssignedToInput[]
   deleteMany?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
 }
 
-export type ComplaintUncheckedUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput> | Prisma.ComplaintCreateWithoutCategoryInput[] | Prisma.ComplaintUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutCategoryInput | Prisma.ComplaintCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.ComplaintUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ComplaintUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.ComplaintCreateManyCategoryInputEnvelope
+export type ComplaintUncheckedUpdateManyWithoutAssignedToNestedInput = {
+  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutAssignedToInput, Prisma.ComplaintUncheckedCreateWithoutAssignedToInput> | Prisma.ComplaintCreateWithoutAssignedToInput[] | Prisma.ComplaintUncheckedCreateWithoutAssignedToInput[]
+  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutAssignedToInput | Prisma.ComplaintCreateOrConnectWithoutAssignedToInput[]
+  upsert?: Prisma.ComplaintUpsertWithWhereUniqueWithoutAssignedToInput | Prisma.ComplaintUpsertWithWhereUniqueWithoutAssignedToInput[]
+  createMany?: Prisma.ComplaintCreateManyAssignedToInputEnvelope
   set?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
   disconnect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
   delete?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
   connect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  update?: Prisma.ComplaintUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ComplaintUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.ComplaintUpdateManyWithWhereWithoutCategoryInput | Prisma.ComplaintUpdateManyWithWhereWithoutCategoryInput[]
+  update?: Prisma.ComplaintUpdateWithWhereUniqueWithoutAssignedToInput | Prisma.ComplaintUpdateWithWhereUniqueWithoutAssignedToInput[]
+  updateMany?: Prisma.ComplaintUpdateManyWithWhereWithoutAssignedToInput | Prisma.ComplaintUpdateManyWithWhereWithoutAssignedToInput[]
   deleteMany?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
+export type EnumCategoryFieldUpdateOperationsInput = {
+  set?: $Enums.Category
+}
+
+export type EnumStatusFieldUpdateOperationsInput = {
+  set?: $Enums.Status
+}
+
+export type EnumPriorityFieldUpdateOperationsInput = {
+  set?: $Enums.Priority
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type ComplaintCreateWithoutCategoryInput = {
-  trackingCode: string
-  title: string
-  description: string
-  status?: string
-  incidentDate?: Date | string | null
-  location?: string | null
-  evidenceUrl?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+export type ComplaintCreateNestedOneWithoutNotesInput = {
+  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutNotesInput, Prisma.ComplaintUncheckedCreateWithoutNotesInput>
+  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutNotesInput
+  connect?: Prisma.ComplaintWhereUniqueInput
 }
 
-export type ComplaintUncheckedCreateWithoutCategoryInput = {
-  id?: number
-  trackingCode: string
-  title: string
-  description: string
-  status?: string
-  incidentDate?: Date | string | null
-  location?: string | null
-  evidenceUrl?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+export type ComplaintUpdateOneRequiredWithoutNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutNotesInput, Prisma.ComplaintUncheckedCreateWithoutNotesInput>
+  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutNotesInput
+  upsert?: Prisma.ComplaintUpsertWithoutNotesInput
+  connect?: Prisma.ComplaintWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ComplaintUpdateToOneWithWhereWithoutNotesInput, Prisma.ComplaintUpdateWithoutNotesInput>, Prisma.ComplaintUncheckedUpdateWithoutNotesInput>
 }
 
-export type ComplaintCreateOrConnectWithoutCategoryInput = {
+export type ComplaintCreateNestedOneWithoutStatusHistoryInput = {
+  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutStatusHistoryInput, Prisma.ComplaintUncheckedCreateWithoutStatusHistoryInput>
+  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutStatusHistoryInput
+  connect?: Prisma.ComplaintWhereUniqueInput
+}
+
+export type ComplaintUpdateOneRequiredWithoutStatusHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutStatusHistoryInput, Prisma.ComplaintUncheckedCreateWithoutStatusHistoryInput>
+  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutStatusHistoryInput
+  upsert?: Prisma.ComplaintUpsertWithoutStatusHistoryInput
+  connect?: Prisma.ComplaintWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ComplaintUpdateToOneWithWhereWithoutStatusHistoryInput, Prisma.ComplaintUpdateWithoutStatusHistoryInput>, Prisma.ComplaintUncheckedUpdateWithoutStatusHistoryInput>
+}
+
+export type ComplaintCreateWithoutAssignedToInput = {
+  id?: string
+  trackingId: string
+  title: string
+  description: string
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: Prisma.NoteCreateNestedManyWithoutComplaintInput
+  statusHistory?: Prisma.StatusHistoryCreateNestedManyWithoutComplaintInput
+}
+
+export type ComplaintUncheckedCreateWithoutAssignedToInput = {
+  id?: string
+  trackingId: string
+  title: string
+  description: string
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: Prisma.NoteUncheckedCreateNestedManyWithoutComplaintInput
+  statusHistory?: Prisma.StatusHistoryUncheckedCreateNestedManyWithoutComplaintInput
+}
+
+export type ComplaintCreateOrConnectWithoutAssignedToInput = {
   where: Prisma.ComplaintWhereUniqueInput
-  create: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput>
+  create: Prisma.XOR<Prisma.ComplaintCreateWithoutAssignedToInput, Prisma.ComplaintUncheckedCreateWithoutAssignedToInput>
 }
 
-export type ComplaintCreateManyCategoryInputEnvelope = {
-  data: Prisma.ComplaintCreateManyCategoryInput | Prisma.ComplaintCreateManyCategoryInput[]
+export type ComplaintCreateManyAssignedToInputEnvelope = {
+  data: Prisma.ComplaintCreateManyAssignedToInput | Prisma.ComplaintCreateManyAssignedToInput[]
   skipDuplicates?: boolean
 }
 
-export type ComplaintUpsertWithWhereUniqueWithoutCategoryInput = {
+export type ComplaintUpsertWithWhereUniqueWithoutAssignedToInput = {
   where: Prisma.ComplaintWhereUniqueInput
-  update: Prisma.XOR<Prisma.ComplaintUpdateWithoutCategoryInput, Prisma.ComplaintUncheckedUpdateWithoutCategoryInput>
-  create: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput>
+  update: Prisma.XOR<Prisma.ComplaintUpdateWithoutAssignedToInput, Prisma.ComplaintUncheckedUpdateWithoutAssignedToInput>
+  create: Prisma.XOR<Prisma.ComplaintCreateWithoutAssignedToInput, Prisma.ComplaintUncheckedCreateWithoutAssignedToInput>
 }
 
-export type ComplaintUpdateWithWhereUniqueWithoutCategoryInput = {
+export type ComplaintUpdateWithWhereUniqueWithoutAssignedToInput = {
   where: Prisma.ComplaintWhereUniqueInput
-  data: Prisma.XOR<Prisma.ComplaintUpdateWithoutCategoryInput, Prisma.ComplaintUncheckedUpdateWithoutCategoryInput>
+  data: Prisma.XOR<Prisma.ComplaintUpdateWithoutAssignedToInput, Prisma.ComplaintUncheckedUpdateWithoutAssignedToInput>
 }
 
-export type ComplaintUpdateManyWithWhereWithoutCategoryInput = {
+export type ComplaintUpdateManyWithWhereWithoutAssignedToInput = {
   where: Prisma.ComplaintScalarWhereInput
-  data: Prisma.XOR<Prisma.ComplaintUpdateManyMutationInput, Prisma.ComplaintUncheckedUpdateManyWithoutCategoryInput>
+  data: Prisma.XOR<Prisma.ComplaintUpdateManyMutationInput, Prisma.ComplaintUncheckedUpdateManyWithoutAssignedToInput>
 }
 
 export type ComplaintScalarWhereInput = {
   AND?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
   OR?: Prisma.ComplaintScalarWhereInput[]
   NOT?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
-  id?: Prisma.IntFilter<"Complaint"> | number
-  trackingCode?: Prisma.StringFilter<"Complaint"> | string
+  id?: Prisma.StringFilter<"Complaint"> | string
+  trackingId?: Prisma.StringFilter<"Complaint"> | string
   title?: Prisma.StringFilter<"Complaint"> | string
   description?: Prisma.StringFilter<"Complaint"> | string
-  categoryId?: Prisma.IntFilter<"Complaint"> | number
-  status?: Prisma.StringFilter<"Complaint"> | string
-  incidentDate?: Prisma.DateTimeNullableFilter<"Complaint"> | Date | string | null
-  location?: Prisma.StringNullableFilter<"Complaint"> | string | null
-  evidenceUrl?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  category?: Prisma.EnumCategoryFilter<"Complaint"> | $Enums.Category
+  status?: Prisma.EnumStatusFilter<"Complaint"> | $Enums.Status
+  priority?: Prisma.EnumPriorityFilter<"Complaint"> | $Enums.Priority
+  attachment?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  assignedToId?: Prisma.StringNullableFilter<"Complaint"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
 }
 
-export type ComplaintCreateManyCategoryInput = {
-  id?: number
-  trackingCode: string
+export type ComplaintCreateWithoutNotesInput = {
+  id?: string
+  trackingId: string
   title: string
   description: string
-  status?: string
-  incidentDate?: Date | string | null
-  location?: string | null
-  evidenceUrl?: string | null
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedComplaintsInput
+  statusHistory?: Prisma.StatusHistoryCreateNestedManyWithoutComplaintInput
+}
+
+export type ComplaintUncheckedCreateWithoutNotesInput = {
+  id?: string
+  trackingId: string
+  title: string
+  description: string
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
+  assignedToId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  statusHistory?: Prisma.StatusHistoryUncheckedCreateNestedManyWithoutComplaintInput
+}
+
+export type ComplaintCreateOrConnectWithoutNotesInput = {
+  where: Prisma.ComplaintWhereUniqueInput
+  create: Prisma.XOR<Prisma.ComplaintCreateWithoutNotesInput, Prisma.ComplaintUncheckedCreateWithoutNotesInput>
+}
+
+export type ComplaintUpsertWithoutNotesInput = {
+  update: Prisma.XOR<Prisma.ComplaintUpdateWithoutNotesInput, Prisma.ComplaintUncheckedUpdateWithoutNotesInput>
+  create: Prisma.XOR<Prisma.ComplaintCreateWithoutNotesInput, Prisma.ComplaintUncheckedCreateWithoutNotesInput>
+  where?: Prisma.ComplaintWhereInput
+}
+
+export type ComplaintUpdateToOneWithWhereWithoutNotesInput = {
+  where?: Prisma.ComplaintWhereInput
+  data: Prisma.XOR<Prisma.ComplaintUpdateWithoutNotesInput, Prisma.ComplaintUncheckedUpdateWithoutNotesInput>
+}
+
+export type ComplaintUpdateWithoutNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignedTo?: Prisma.UserUpdateOneWithoutAssignedComplaintsNestedInput
+  statusHistory?: Prisma.StatusHistoryUpdateManyWithoutComplaintNestedInput
+}
+
+export type ComplaintUncheckedUpdateWithoutNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  statusHistory?: Prisma.StatusHistoryUncheckedUpdateManyWithoutComplaintNestedInput
+}
+
+export type ComplaintCreateWithoutStatusHistoryInput = {
+  id?: string
+  trackingId: string
+  title: string
+  description: string
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedComplaintsInput
+  notes?: Prisma.NoteCreateNestedManyWithoutComplaintInput
+}
+
+export type ComplaintUncheckedCreateWithoutStatusHistoryInput = {
+  id?: string
+  trackingId: string
+  title: string
+  description: string
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
+  assignedToId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: Prisma.NoteUncheckedCreateNestedManyWithoutComplaintInput
+}
+
+export type ComplaintCreateOrConnectWithoutStatusHistoryInput = {
+  where: Prisma.ComplaintWhereUniqueInput
+  create: Prisma.XOR<Prisma.ComplaintCreateWithoutStatusHistoryInput, Prisma.ComplaintUncheckedCreateWithoutStatusHistoryInput>
+}
+
+export type ComplaintUpsertWithoutStatusHistoryInput = {
+  update: Prisma.XOR<Prisma.ComplaintUpdateWithoutStatusHistoryInput, Prisma.ComplaintUncheckedUpdateWithoutStatusHistoryInput>
+  create: Prisma.XOR<Prisma.ComplaintCreateWithoutStatusHistoryInput, Prisma.ComplaintUncheckedCreateWithoutStatusHistoryInput>
+  where?: Prisma.ComplaintWhereInput
+}
+
+export type ComplaintUpdateToOneWithWhereWithoutStatusHistoryInput = {
+  where?: Prisma.ComplaintWhereInput
+  data: Prisma.XOR<Prisma.ComplaintUpdateWithoutStatusHistoryInput, Prisma.ComplaintUncheckedUpdateWithoutStatusHistoryInput>
+}
+
+export type ComplaintUpdateWithoutStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignedTo?: Prisma.UserUpdateOneWithoutAssignedComplaintsNestedInput
+  notes?: Prisma.NoteUpdateManyWithoutComplaintNestedInput
+}
+
+export type ComplaintUncheckedUpdateWithoutStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NoteUncheckedUpdateManyWithoutComplaintNestedInput
+}
+
+export type ComplaintCreateManyAssignedToInput = {
+  id?: string
+  trackingId: string
+  title: string
+  description: string
+  category: $Enums.Category
+  status?: $Enums.Status
+  priority?: $Enums.Priority
+  attachment?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type ComplaintUpdateWithoutCategoryInput = {
-  trackingCode?: Prisma.StringFieldUpdateOperationsInput | string
+export type ComplaintUpdateWithoutAssignedToInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  incidentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NoteUpdateManyWithoutComplaintNestedInput
+  statusHistory?: Prisma.StatusHistoryUpdateManyWithoutComplaintNestedInput
+}
+
+export type ComplaintUncheckedUpdateWithoutAssignedToInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NoteUncheckedUpdateManyWithoutComplaintNestedInput
+  statusHistory?: Prisma.StatusHistoryUncheckedUpdateManyWithoutComplaintNestedInput
+}
+
+export type ComplaintUncheckedUpdateManyWithoutAssignedToInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  attachment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ComplaintUncheckedUpdateWithoutCategoryInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  trackingCode?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  incidentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+
+/**
+ * Count Type ComplaintCountOutputType
+ */
+
+export type ComplaintCountOutputType = {
+  notes: number
+  statusHistory: number
 }
 
-export type ComplaintUncheckedUpdateManyWithoutCategoryInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  trackingCode?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  incidentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type ComplaintCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  notes?: boolean | ComplaintCountOutputTypeCountNotesArgs
+  statusHistory?: boolean | ComplaintCountOutputTypeCountStatusHistoryArgs
 }
 
+/**
+ * ComplaintCountOutputType without action
+ */
+export type ComplaintCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ComplaintCountOutputType
+   */
+  select?: Prisma.ComplaintCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ComplaintCountOutputType without action
+ */
+export type ComplaintCountOutputTypeCountNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NoteWhereInput
+}
+
+/**
+ * ComplaintCountOutputType without action
+ */
+export type ComplaintCountOutputTypeCountStatusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StatusHistoryWhereInput
+}
 
 
 export type ComplaintSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  trackingCode?: boolean
+  trackingId?: boolean
   title?: boolean
   description?: boolean
-  categoryId?: boolean
+  category?: boolean
   status?: boolean
-  incidentDate?: boolean
-  location?: boolean
-  evidenceUrl?: boolean
+  priority?: boolean
+  attachment?: boolean
+  assignedToId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  assignedTo?: boolean | Prisma.Complaint$assignedToArgs<ExtArgs>
+  notes?: boolean | Prisma.Complaint$notesArgs<ExtArgs>
+  statusHistory?: boolean | Prisma.Complaint$statusHistoryArgs<ExtArgs>
+  _count?: boolean | Prisma.ComplaintCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["complaint"]>
 
 export type ComplaintSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  trackingCode?: boolean
+  trackingId?: boolean
   title?: boolean
   description?: boolean
-  categoryId?: boolean
+  category?: boolean
   status?: boolean
-  incidentDate?: boolean
-  location?: boolean
-  evidenceUrl?: boolean
+  priority?: boolean
+  attachment?: boolean
+  assignedToId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  assignedTo?: boolean | Prisma.Complaint$assignedToArgs<ExtArgs>
 }, ExtArgs["result"]["complaint"]>
 
 export type ComplaintSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  trackingCode?: boolean
+  trackingId?: boolean
   title?: boolean
   description?: boolean
-  categoryId?: boolean
+  category?: boolean
   status?: boolean
-  incidentDate?: boolean
-  location?: boolean
-  evidenceUrl?: boolean
+  priority?: boolean
+  attachment?: boolean
+  assignedToId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  assignedTo?: boolean | Prisma.Complaint$assignedToArgs<ExtArgs>
 }, ExtArgs["result"]["complaint"]>
 
 export type ComplaintSelectScalar = {
   id?: boolean
-  trackingCode?: boolean
+  trackingId?: boolean
   title?: boolean
   description?: boolean
-  categoryId?: boolean
+  category?: boolean
   status?: boolean
-  incidentDate?: boolean
-  location?: boolean
-  evidenceUrl?: boolean
+  priority?: boolean
+  attachment?: boolean
+  assignedToId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ComplaintOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trackingCode" | "title" | "description" | "categoryId" | "status" | "incidentDate" | "location" | "evidenceUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["complaint"]>
+export type ComplaintOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trackingId" | "title" | "description" | "category" | "status" | "priority" | "attachment" | "assignedToId" | "createdAt" | "updatedAt", ExtArgs["result"]["complaint"]>
 export type ComplaintInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  assignedTo?: boolean | Prisma.Complaint$assignedToArgs<ExtArgs>
+  notes?: boolean | Prisma.Complaint$notesArgs<ExtArgs>
+  statusHistory?: boolean | Prisma.Complaint$statusHistoryArgs<ExtArgs>
+  _count?: boolean | Prisma.ComplaintCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ComplaintIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  assignedTo?: boolean | Prisma.Complaint$assignedToArgs<ExtArgs>
 }
 export type ComplaintIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  assignedTo?: boolean | Prisma.Complaint$assignedToArgs<ExtArgs>
 }
 
 export type $ComplaintPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Complaint"
   objects: {
-    category: Prisma.$CategoryPayload<ExtArgs>
+    assignedTo: Prisma.$UserPayload<ExtArgs> | null
+    notes: Prisma.$NotePayload<ExtArgs>[]
+    statusHistory: Prisma.$StatusHistoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
-    trackingCode: string
+    id: string
+    trackingId: string
     title: string
     description: string
-    categoryId: number
-    status: string
-    incidentDate: Date | null
-    location: string | null
-    evidenceUrl: string | null
+    category: $Enums.Category
+    status: $Enums.Status
+    priority: $Enums.Priority
+    attachment: string | null
+    assignedToId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["complaint"]>
@@ -1148,7 +1364,9 @@ readonly fields: ComplaintFieldRefs;
  */
 export interface Prisma__ComplaintClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  assignedTo<T extends Prisma.Complaint$assignedToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Complaint$assignedToArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  notes<T extends Prisma.Complaint$notesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Complaint$notesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  statusHistory<T extends Prisma.Complaint$statusHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Complaint$statusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1178,15 +1396,15 @@ export interface Prisma__ComplaintClient<T, Null = never, ExtArgs extends runtim
  * Fields of the Complaint model
  */
 export interface ComplaintFieldRefs {
-  readonly id: Prisma.FieldRef<"Complaint", 'Int'>
-  readonly trackingCode: Prisma.FieldRef<"Complaint", 'String'>
+  readonly id: Prisma.FieldRef<"Complaint", 'String'>
+  readonly trackingId: Prisma.FieldRef<"Complaint", 'String'>
   readonly title: Prisma.FieldRef<"Complaint", 'String'>
   readonly description: Prisma.FieldRef<"Complaint", 'String'>
-  readonly categoryId: Prisma.FieldRef<"Complaint", 'Int'>
-  readonly status: Prisma.FieldRef<"Complaint", 'String'>
-  readonly incidentDate: Prisma.FieldRef<"Complaint", 'DateTime'>
-  readonly location: Prisma.FieldRef<"Complaint", 'String'>
-  readonly evidenceUrl: Prisma.FieldRef<"Complaint", 'String'>
+  readonly category: Prisma.FieldRef<"Complaint", 'Category'>
+  readonly status: Prisma.FieldRef<"Complaint", 'Status'>
+  readonly priority: Prisma.FieldRef<"Complaint", 'Priority'>
+  readonly attachment: Prisma.FieldRef<"Complaint", 'String'>
+  readonly assignedToId: Prisma.FieldRef<"Complaint", 'String'>
   readonly createdAt: Prisma.FieldRef<"Complaint", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Complaint", 'DateTime'>
 }
@@ -1587,6 +1805,73 @@ export type ComplaintDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many Complaints to delete.
    */
   limit?: number
+}
+
+/**
+ * Complaint.assignedTo
+ */
+export type Complaint$assignedToArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * Complaint.notes
+ */
+export type Complaint$notesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Note
+   */
+  select?: Prisma.NoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Note
+   */
+  omit?: Prisma.NoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoteInclude<ExtArgs> | null
+  where?: Prisma.NoteWhereInput
+  orderBy?: Prisma.NoteOrderByWithRelationInput | Prisma.NoteOrderByWithRelationInput[]
+  cursor?: Prisma.NoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NoteScalarFieldEnum | Prisma.NoteScalarFieldEnum[]
+}
+
+/**
+ * Complaint.statusHistory
+ */
+export type Complaint$statusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StatusHistory
+   */
+  select?: Prisma.StatusHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StatusHistory
+   */
+  omit?: Prisma.StatusHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StatusHistoryInclude<ExtArgs> | null
+  where?: Prisma.StatusHistoryWhereInput
+  orderBy?: Prisma.StatusHistoryOrderByWithRelationInput | Prisma.StatusHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.StatusHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StatusHistoryScalarFieldEnum | Prisma.StatusHistoryScalarFieldEnum[]
 }
 
 /**

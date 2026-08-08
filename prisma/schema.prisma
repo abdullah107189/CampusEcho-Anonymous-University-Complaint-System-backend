@@ -1,0 +1,108 @@
+ 
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(staff)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  assignedComplaints Complaint[]     @relation("AssignedTo")
+  notes              Note[]          @relation("AddedBy")
+  statusChanges      StatusHistory[] @relation("ChangedBy")
+
+  @@index([email])
+}
+
+model Complaint {
+  id           String   @id @default(cuid())
+  trackingId   String   @unique
+  title        String
+  description  String   @db.Text
+  category     Category
+  status       Status   @default(Pending)
+  priority     Priority @default(Medium)
+  attachment   String?
+  assignedToId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  assignedTo    User?           @relation("AssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
+  notes         Note[]
+  statusHistory StatusHistory[]
+
+  @@index([trackingId])
+  @@index([status])
+  @@index([category])
+  @@index([priority])
+}
+
+model Note {
+  id          String   @id @default(cuid())
+  content     String   @db.Text
+  complaintId String
+  addedById   String
+  createdAt   DateTime @default(now())
+
+  complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  addedBy   User      @relation("AddedBy", fields: [addedById], references: [id], onDelete: Cascade)
+
+  @@index([complaintId])
+}
+
+model StatusHistory {
+  id          String   @id @default(cuid())
+  status      Status
+  complaintId String
+  changedById String
+  changedAt   DateTime @default(now())
+
+  complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  changedBy User      @relation("ChangedBy", fields: [changedById], references: [id], onDelete: Cascade)
+
+  @@index([complaintId])
+}
+
+enum Role {
+  admin
+  staff
+}
+
+enum Category {
+  Academic
+  Facilities
+  Administrative
+  Hostel
+  Transport
+  IT_Services
+  Library
+  Sports
+  Cafeteria
+  Other
+}
+
+enum Status {
+  Pending
+  Under_Review
+  Investigating
+  Resolved
+  Rejected
+}
+
+enum Priority {
+  Low
+  Medium
+  High
+  Urgent
+}
