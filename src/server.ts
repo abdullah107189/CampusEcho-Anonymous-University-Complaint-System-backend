@@ -21,15 +21,9 @@ const startServer = async () => {
 
     // 2. Start Express Server
     const server = app.listen(PORT, () => {
-      console.log("\n🚀 ========================================");
-      console.log(`🚀 CampusEcho Server is running!`);
-      console.log("🚀 ========================================");
-      console.log(`📍 Local:    http://localhost:${PORT}`);
-      console.log(`📡 API:      http://localhost:${PORT}/api`);
-      console.log(`❤️  Health:   http://localhost:${PORT}/api/health`);
-      console.log(`🌍 Environment: ${NODE_ENV}`);
-      console.log(`📅 Started:  ${new Date().toISOString()}`);
-      console.log("🚀 ========================================\n");
+      console.log("\n ========================================");
+      console.log(`🚀 CampusEcho Server is running!`); 
+      console.log(" ========================================\n");
     });
 
     // 3. Graceful Shutdown Handlers
