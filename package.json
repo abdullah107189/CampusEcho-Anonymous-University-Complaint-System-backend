@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "bun --watch src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
+    "dev:app": "bun --watch src/app.ts",
+    "start": "bun src/server.ts",
+    "build": "bun build src/server.ts --outdir dist",
+    "seed": "bun src/seed/admin.seeder.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"
   },
