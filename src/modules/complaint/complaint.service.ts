@@ -1,6 +1,5 @@
- 
-import { prisma } from '../../../lib/prisma';
-import { generateTrackingId } from '../../shared/utils/generateTrackingId';
+import { prisma } from "../../../lib/prisma";
+import { generateTrackingId } from "../../shared/utils/generateTrackingId";
 
 export const submitComplaint = async (data: {
   title: string;
@@ -17,7 +16,7 @@ export const submitComplaint = async (data: {
       title: data.title,
       description: data.description,
       category: data.category,
-      priority: data.priority || 'Medium',
+      priority: data.priority || "Medium",
       attachment: data.attachment || null,
     },
   });
@@ -40,7 +39,7 @@ export const trackComplaint = async (trackingId: string) => {
   });
 
   if (!complaint) {
-    throw new Error('Complaint not found');
+    throw new Error("Complaint not found");
   }
 
   return complaint;
