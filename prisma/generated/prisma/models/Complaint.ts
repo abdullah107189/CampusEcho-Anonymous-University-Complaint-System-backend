@@ -522,10 +522,6 @@ export type EnumPriorityFieldUpdateOperationsInput = {
   set?: $Enums.Priority
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type ComplaintCreateNestedOneWithoutNotesInput = {
   create?: Prisma.XOR<Prisma.ComplaintCreateWithoutNotesInput, Prisma.ComplaintUncheckedCreateWithoutNotesInput>
   connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutNotesInput

@@ -1,7 +1,15 @@
-import { Response, NextFunction } from 'express';
-import { AuthRequest } from '../types';
-import { verifyToken } from '../utils/generateToken';
-import { prisma } from '../../lib/prisma';
+import { Request, Response, NextFunction } from 'express';
+import { verifyToken } from '../utils/generateToken'; 
+import { prisma } from '../../../lib/prisma';
+
+export interface AuthRequest extends Request {
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
+}
 
 export const authMiddleware = async (
   req: AuthRequest,

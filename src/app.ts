@@ -1,57 +1,59 @@
-import express from "express";
-import cors from "cors";
-import helmet from "helmet";
-import morgan from "morgan";
-import { config } from "./config/config";
-import { errorMiddleware } from "./middleware/error.middleware";
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { errorMiddleware } from './shared/middleware/error.middleware';
 
-
-
-import authRoutes from '../src/modules/auth/auth.routes';
-import complaintRoutes from '../src/modules/complaint/complaint.routes';
-import adminRoutes from '../src/modules/admin/admin.routes';
+// Import all module routes
+import authRoutes from './modules/auth/auth.routes';
+import complaintRoutes from './modules/complaint/complaint.routes';
+import adminRoutes from './modules/admin/admin.routes';
 
 const app = express();
 
-// ====================== GLOBAL MIDDLEWARES ======================
-
 // Security
 app.use(helmet());
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  credentials: true,
+}));
 
-// CORS
-app.use(
-  cors({
-    origin: config.frontendUrl,
-    credentials: true,
-  }),
-);
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { success: false, message: 'Too many requests' },
+});
+app.use('/api', limiter);
 
-// Logging
-app.use(morgan(config.nodeEnv === "development" ? "dev" : "combined"));
-
-// Body Parser
-app.use(express.json({ limit: "10mb" }));
+// Body parser
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.urlencoded({ extended: true }));
-
-
+// Root routes - All modules connected here
 app.use('/api/auth', authRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/admin', adminRoutes);
-// ====================== ROUTES ======================
-// app.use("/api/v1/complaints", complaintRoutes);
 
-// Health Check
-app.get("/health", (req, res) => {
-  res.status(200).json({
-    status: "success",
-    message: "CampusEcho Backend is running smoothly!",
-    timestamp: new Date().toISOString(),
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'CampusEcho API is running',
+    version: '1.0.0',
+    timestamp: new Date().toISOString()
   });
 });
 
-// Global Error Handler  
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`,
+  });
+});
+
+// Error handling
 app.use(errorMiddleware);
 
 export default app;

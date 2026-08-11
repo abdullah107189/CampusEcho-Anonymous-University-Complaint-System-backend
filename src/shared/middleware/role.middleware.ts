@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
-import { AuthRequest } from '../types';
-import { Role } from '../../prisma/generated/prisma/enums';
+import { AuthRequest } from '../../types';
+import { Role } from '../../../prisma/generated/prisma/enums';
 
 export const roleMiddleware = (allowedRoles: Role[]) => {
   return (req: AuthRequest, res: Response, next: NextFunction): void => {

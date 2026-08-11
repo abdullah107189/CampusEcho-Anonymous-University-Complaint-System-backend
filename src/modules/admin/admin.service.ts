@@ -1,7 +1,106 @@
-import { prisma } from "../../../lib/prisma";
-import { Status } from "../../../prisma/generated/prisma/enums";
+  
+import { prisma } from '../../../lib/prisma';
+import { Status } from '../../../prisma/generated/prisma/enums';
 
- 
+export const getComplaints = async (filters: any = {}) => {
+  const { status, category, search, page = 1, limit = 10 } = filters;
+
+  const where: any = {};
+  if (status) where.status = status;
+  if (category) where.category = category;
+  
+  if (search) {
+    where.OR = [
+      { trackingId: { contains: search, mode: 'insensitive' } },
+      { title: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+
+  const skip = (page - 1) * limit;
+
+  const [complaints, total] = await Promise.all([
+    prisma.complaint.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
+      include: {
+        assignedTo: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        notes: {
+          include: {
+            addedBy: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    }),
+    prisma.complaint.count({ where }),
+  ]);
+
+  return {
+    complaints,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
+
+export const getComplaintById = async (id: string) => {
+  const complaint = await prisma.complaint.findUnique({
+    where: { id },
+    include: {
+      assignedTo: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+      notes: {
+        include: {
+          addedBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      },
+      statusHistory: {
+        include: {
+          changedBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+        orderBy: { changedAt: 'desc' },
+      },
+    },
+  });
+
+  if (!complaint) {
+    throw new Error('Complaint not found');
+  }
+
+  return complaint;
+};
 
 export const updateComplaintStatus = async (
   complaintId: string,
@@ -16,6 +115,15 @@ export const updateComplaintStatus = async (
         create: {
           status,
           changedById: userId,
+        },
+      },
+    },
+    include: {
+      assignedTo: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
         },
       },
     },
@@ -80,4 +188,24 @@ export const deleteComplaint = async (complaintId: string) => {
   ]);
 
   return { success: true };
+};
+
+export const getDashboardStats = async () => {
+  const [total, pending, underReview, investigating, resolved, rejected] = await Promise.all([
+    prisma.complaint.count(),
+    prisma.complaint.count({ where: { status: 'Pending' } }),
+    prisma.complaint.count({ where: { status: 'Under_Review' } }),
+    prisma.complaint.count({ where: { status: 'Investigating' } }),
+    prisma.complaint.count({ where: { status: 'Resolved' } }),
+    prisma.complaint.count({ where: { status: 'Rejected' } }),
+  ]);
+
+  return {
+    totalComplaints: total,
+    pending,
+    underReview,
+    investigating,
+    resolved,
+    rejected,
+  };
 };

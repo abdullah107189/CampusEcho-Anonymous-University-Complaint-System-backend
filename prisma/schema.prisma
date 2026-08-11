@@ -14,22 +14,25 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(staff)
-  isActive  Boolean  @default(true)
+  isActive  Boolean  @default(false)
+  isVerified Boolean @default(false)
+  otp       String?
+  otpExpiry DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  assignedComplaints Complaint[]     @relation("AssignedTo")
-  notes              Note[]          @relation("AddedBy")
+  
+  assignedComplaints Complaint[] @relation("AssignedTo")
+  notes              Note[]      @relation("AddedBy")
   statusChanges      StatusHistory[] @relation("ChangedBy")
-
-  @@index([email])
+  
+  @@map("users")
 }
 
 model Complaint {
   id           String   @id @default(cuid())
   trackingId   String   @unique
   title        String
-  description  String   @db.Text
+  description  String
   category     Category
   status       Status   @default(Pending)
   priority     Priority @default(Medium)
@@ -37,28 +40,28 @@ model Complaint {
   assignedToId String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-
-  assignedTo    User?           @relation("AssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
-  notes         Note[]
+  
+  assignedTo   User?            @relation("AssignedTo", fields: [assignedToId], references: [id])
+  notes        Note[]
   statusHistory StatusHistory[]
-
+  
   @@index([trackingId])
   @@index([status])
   @@index([category])
-  @@index([priority])
+  @@map("complaints")
 }
 
 model Note {
   id          String   @id @default(cuid())
-  content     String   @db.Text
+  content     String
   complaintId String
   addedById   String
   createdAt   DateTime @default(now())
-
-  complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
-  addedBy   User      @relation("AddedBy", fields: [addedById], references: [id], onDelete: Cascade)
-
-  @@index([complaintId])
+  
+  complaint   Complaint @relation(fields: [complaintId], references: [id])
+  addedBy     User      @relation("AddedBy", fields: [addedById], references: [id])
+  
+  @@map("notes")
 }
 
 model StatusHistory {
@@ -67,11 +70,11 @@ model StatusHistory {
   complaintId String
   changedById String
   changedAt   DateTime @default(now())
-
-  complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
-  changedBy User      @relation("ChangedBy", fields: [changedById], references: [id], onDelete: Cascade)
-
-  @@index([complaintId])
+  
+  complaint   Complaint @relation(fields: [complaintId], references: [id])
+  changedBy   User      @relation("ChangedBy", fields: [changedById], references: [id])
+  
+  @@map("status_history")
 }
 
 enum Role {

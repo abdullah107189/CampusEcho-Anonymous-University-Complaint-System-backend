@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { uploadSingle } from '../../middleware/upload.middleware';
 import { submit, track } from './complaint.controller';
+import { uploadSingle } from '../../shared/middleware/upload.middleware';
 
 const router = Router();
 
