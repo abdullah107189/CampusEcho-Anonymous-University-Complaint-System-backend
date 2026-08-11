@@ -23,6 +23,7 @@
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
     "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
@@ -42,6 +43,7 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/cookie-parser": "^1.4.10",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.2.0",
     "@types/node": "^26.0.1",

@@ -34,6 +34,7 @@ export type UserMinAggregateOutputType = {
   isVerified: boolean | null
   otp: string | null
   otpExpiry: Date | null
+  refreshToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +49,7 @@ export type UserMaxAggregateOutputType = {
   isVerified: boolean | null
   otp: string | null
   otpExpiry: Date | null
+  refreshToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +64,7 @@ export type UserCountAggregateOutputType = {
   isVerified: number
   otp: number
   otpExpiry: number
+  refreshToken: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -78,6 +81,7 @@ export type UserMinAggregateInputType = {
   isVerified?: true
   otp?: true
   otpExpiry?: true
+  refreshToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +96,7 @@ export type UserMaxAggregateInputType = {
   isVerified?: true
   otp?: true
   otpExpiry?: true
+  refreshToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +111,7 @@ export type UserCountAggregateInputType = {
   isVerified?: true
   otp?: true
   otpExpiry?: true
+  refreshToken?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -193,6 +199,7 @@ export type UserGroupByOutputType = {
   isVerified: boolean
   otp: string | null
   otpExpiry: Date | null
+  refreshToken: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -228,6 +235,7 @@ export type UserWhereInput = {
   isVerified?: Prisma.BoolFilter<"User"> | boolean
   otp?: Prisma.StringNullableFilter<"User"> | string | null
   otpExpiry?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  refreshToken?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   assignedComplaints?: Prisma.ComplaintListRelationFilter
@@ -245,6 +253,7 @@ export type UserOrderByWithRelationInput = {
   isVerified?: Prisma.SortOrder
   otp?: Prisma.SortOrderInput | Prisma.SortOrder
   otpExpiry?: Prisma.SortOrderInput | Prisma.SortOrder
+  refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   assignedComplaints?: Prisma.ComplaintOrderByRelationAggregateInput
@@ -265,6 +274,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   isVerified?: Prisma.BoolFilter<"User"> | boolean
   otp?: Prisma.StringNullableFilter<"User"> | string | null
   otpExpiry?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  refreshToken?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   assignedComplaints?: Prisma.ComplaintListRelationFilter
@@ -282,6 +292,7 @@ export type UserOrderByWithAggregationInput = {
   isVerified?: Prisma.SortOrder
   otp?: Prisma.SortOrderInput | Prisma.SortOrder
   otpExpiry?: Prisma.SortOrderInput | Prisma.SortOrder
+  refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -302,6 +313,7 @@ export type UserScalarWhereWithAggregatesInput = {
   isVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   otp?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   otpExpiry?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  refreshToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -316,6 +328,7 @@ export type UserCreateInput = {
   isVerified?: boolean
   otp?: string | null
   otpExpiry?: Date | string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignedComplaints?: Prisma.ComplaintCreateNestedManyWithoutAssignedToInput
@@ -333,6 +346,7 @@ export type UserUncheckedCreateInput = {
   isVerified?: boolean
   otp?: string | null
   otpExpiry?: Date | string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignedComplaints?: Prisma.ComplaintUncheckedCreateNestedManyWithoutAssignedToInput
@@ -350,6 +364,7 @@ export type UserUpdateInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedComplaints?: Prisma.ComplaintUpdateManyWithoutAssignedToNestedInput
@@ -367,6 +382,7 @@ export type UserUncheckedUpdateInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedComplaints?: Prisma.ComplaintUncheckedUpdateManyWithoutAssignedToNestedInput
@@ -384,6 +400,7 @@ export type UserCreateManyInput = {
   isVerified?: boolean
   otp?: string | null
   otpExpiry?: Date | string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -398,6 +415,7 @@ export type UserUpdateManyMutationInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -412,6 +430,7 @@ export type UserUncheckedUpdateManyInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -426,6 +445,7 @@ export type UserCountOrderByAggregateInput = {
   isVerified?: Prisma.SortOrder
   otp?: Prisma.SortOrder
   otpExpiry?: Prisma.SortOrder
+  refreshToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -440,6 +460,7 @@ export type UserMaxOrderByAggregateInput = {
   isVerified?: Prisma.SortOrder
   otp?: Prisma.SortOrder
   otpExpiry?: Prisma.SortOrder
+  refreshToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -454,6 +475,7 @@ export type UserMinOrderByAggregateInput = {
   isVerified?: Prisma.SortOrder
   otp?: Prisma.SortOrder
   otpExpiry?: Prisma.SortOrder
+  refreshToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -546,6 +568,7 @@ export type UserCreateWithoutAssignedComplaintsInput = {
   isVerified?: boolean
   otp?: string | null
   otpExpiry?: Date | string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   notes?: Prisma.NoteCreateNestedManyWithoutAddedByInput
@@ -562,6 +585,7 @@ export type UserUncheckedCreateWithoutAssignedComplaintsInput = {
   isVerified?: boolean
   otp?: string | null
   otpExpiry?: Date | string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutAddedByInput
@@ -594,6 +618,7 @@ export type UserUpdateWithoutAssignedComplaintsInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NoteUpdateManyWithoutAddedByNestedInput
@@ -610,6 +635,7 @@ export type UserUncheckedUpdateWithoutAssignedComplaintsInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NoteUncheckedUpdateManyWithoutAddedByNestedInput
@@ -626,6 +652,7 @@ export type UserCreateWithoutNotesInput = {
   isVerified?: boolean
   otp?: string | null
   otpExpiry?: Date | string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignedComplaints?: Prisma.ComplaintCreateNestedManyWithoutAssignedToInput
@@ -642,6 +669,7 @@ export type UserUncheckedCreateWithoutNotesInput = {
   isVerified?: boolean
   otp?: string | null
   otpExpiry?: Date | string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignedComplaints?: Prisma.ComplaintUncheckedCreateNestedManyWithoutAssignedToInput
@@ -674,6 +702,7 @@ export type UserUpdateWithoutNotesInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedComplaints?: Prisma.ComplaintUpdateManyWithoutAssignedToNestedInput
@@ -690,6 +719,7 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedComplaints?: Prisma.ComplaintUncheckedUpdateManyWithoutAssignedToNestedInput
@@ -706,6 +736,7 @@ export type UserCreateWithoutStatusChangesInput = {
   isVerified?: boolean
   otp?: string | null
   otpExpiry?: Date | string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignedComplaints?: Prisma.ComplaintCreateNestedManyWithoutAssignedToInput
@@ -722,6 +753,7 @@ export type UserUncheckedCreateWithoutStatusChangesInput = {
   isVerified?: boolean
   otp?: string | null
   otpExpiry?: Date | string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignedComplaints?: Prisma.ComplaintUncheckedCreateNestedManyWithoutAssignedToInput
@@ -754,6 +786,7 @@ export type UserUpdateWithoutStatusChangesInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedComplaints?: Prisma.ComplaintUpdateManyWithoutAssignedToNestedInput
@@ -770,6 +803,7 @@ export type UserUncheckedUpdateWithoutStatusChangesInput = {
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedComplaints?: Prisma.ComplaintUncheckedUpdateManyWithoutAssignedToNestedInput
@@ -835,6 +869,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   isVerified?: boolean
   otp?: boolean
   otpExpiry?: boolean
+  refreshToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   assignedComplaints?: boolean | Prisma.User$assignedComplaintsArgs<ExtArgs>
@@ -853,6 +888,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   isVerified?: boolean
   otp?: boolean
   otpExpiry?: boolean
+  refreshToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -867,6 +903,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   isVerified?: boolean
   otp?: boolean
   otpExpiry?: boolean
+  refreshToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -881,11 +918,12 @@ export type UserSelectScalar = {
   isVerified?: boolean
   otp?: boolean
   otpExpiry?: boolean
+  refreshToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "isActive" | "isVerified" | "otp" | "otpExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "isActive" | "isVerified" | "otp" | "otpExpiry" | "refreshToken" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignedComplaints?: boolean | Prisma.User$assignedComplaintsArgs<ExtArgs>
   notes?: boolean | Prisma.User$notesArgs<ExtArgs>
@@ -912,6 +950,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     isVerified: boolean
     otp: string | null
     otpExpiry: Date | null
+    refreshToken: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1349,6 +1388,7 @@ export interface UserFieldRefs {
   readonly isVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly otp: Prisma.FieldRef<"User", 'String'>
   readonly otpExpiry: Prisma.FieldRef<"User", 'DateTime'>
+  readonly refreshToken: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

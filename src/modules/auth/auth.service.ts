@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import { generateToken } from "../../shared/utils/generateToken";
+import { generateAccessToken, generateRefreshToken, generateToken, verifyRefreshToken } from "../../shared/utils/generateToken";
 import { sendOTPEmail, sendWelcomeEmail } from "../../shared/utils/sendEmail";
 import { IRegisterRequest, ILoginRequest } from "./auth.types";
 import { prisma } from "../../../lib/prisma";
@@ -151,25 +151,31 @@ export const loginUser = async (data: ILoginRequest) => {
   });
 
   if (!user) {
-    throw new Error("Invalid credentials");
+    throw new Error('Invalid credentials');
   }
 
   if (!user.isVerified) {
-    throw new Error(
-      "Please verify your email first. Check your inbox for OTP.",
-    );
+    throw new Error('Please verify your email first. Check your inbox for OTP.');
   }
 
   if (!user.isActive) {
-    throw new Error("Account deactivated. Please contact admin.");
+    throw new Error('Account deactivated. Please contact admin.');
   }
 
   const isValidPassword = await bcrypt.compare(data.password, user.password);
   if (!isValidPassword) {
-    throw new Error("Invalid credentials");
+    throw new Error('Invalid credentials');
   }
 
-  const token = generateToken(user.id, user.role);
+  // Generate tokens
+  const accessToken = generateAccessToken(user.id, user.role);
+  const refreshToken = generateRefreshToken(user.id);
+
+  // Save refresh token to database
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { refreshToken },
+  });
 
   return {
     user: {
@@ -179,8 +185,53 @@ export const loginUser = async (data: ILoginRequest) => {
       role: user.role,
       isVerified: user.isVerified,
     },
-    token,
+    accessToken,
+    refreshToken,
   };
+};
+
+export const refreshAccessToken = async (refreshToken: string) => {
+  if (!refreshToken) {
+    throw new Error('Refresh token required');
+  }
+
+  // Verify refresh token
+  const decoded = verifyRefreshToken(refreshToken);
+  
+  // Check if refresh token exists in database
+  const user = await prisma.user.findFirst({
+    where: {
+      id: decoded.userId,
+      refreshToken: refreshToken,
+    },
+  });
+
+  if (!user) {
+    throw new Error('Invalid refresh token');
+  }
+
+  // Generate new access token
+  const newAccessToken = generateAccessToken(user.id, user.role);
+
+  return {
+    accessToken: newAccessToken,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  };
+};
+
+export const logoutUser = async (userId: string) => {
+  // Clear refresh token from database
+  await prisma.user.update({
+    where: { id: userId },
+    data: { refreshToken: null },
+  });
+
+  return { message: 'Logged out successfully' };
 };
 
 export const getCurrentUser = async (userId: string) => {
@@ -198,7 +249,7 @@ export const getCurrentUser = async (userId: string) => {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 
   return user;

@@ -1,7 +1,8 @@
+// src/shared/middleware/auth.middleware.ts
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/generateToken'; 
+import { verifyAccessToken } from '../utils/generateToken'; 
 import { prisma } from '../../../lib/prisma';
-
+// Extend Express Request type
 export interface AuthRequest extends Request {
   user?: {
     id: string;
@@ -9,6 +10,7 @@ export interface AuthRequest extends Request {
     email: string;
     role: string;
   };
+  cookies: any; // Add this for cookie parser
 }
 
 export const authMiddleware = async (
@@ -17,7 +19,15 @@ export const authMiddleware = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    // Get token from cookie (priority) or Authorization header
+    let token = req.cookies?.accessToken;
+    
+    if (!token) {
+      const authHeader = req.headers.authorization;
+      if (authHeader?.startsWith('Bearer ')) {
+        token = authHeader.split(' ')[1];
+      }
+    }
     
     if (!token) {
       res.status(401).json({
@@ -27,29 +37,41 @@ export const authMiddleware = async (
       return;
     }
 
-    const decoded = verifyToken(token);
-    
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isActive: true,
-      },
-    });
-
-    if (!user || !user.isActive) {
-      res.status(401).json({
-        success: false,
-        message: 'Invalid or inactive user',
+    try {
+      const decoded = verifyAccessToken(token);
+      
+      const user = await prisma.user.findUnique({
+        where: { id: decoded.userId },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          isActive: true,
+        },
       });
-      return;
-    }
 
-    req.user = user;
-    next();
+      if (!user || !user.isActive) {
+        res.status(401).json({
+          success: false,
+          message: 'Invalid or inactive user',
+        });
+        return;
+      }
+
+      req.user = user;
+      next();
+    } catch (error: any) {
+      if (error.message === 'jwt expired') {
+        res.status(401).json({
+          success: false,
+          message: 'Token expired. Please refresh.',
+          code: 'TOKEN_EXPIRED',
+        });
+        return;
+      }
+      throw error;
+    }
   } catch (error) {
     res.status(401).json({
       success: false,

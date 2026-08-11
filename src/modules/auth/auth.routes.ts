@@ -4,8 +4,9 @@ import {
   verifyEmail, 
   resendOTP, 
   login, 
-  getMe,
-  logout 
+  refreshToken,
+  logout,
+  getMe 
 } from './auth.controller';
 import { authMiddleware } from '../../shared/middleware/auth.middleware';
 
@@ -16,6 +17,7 @@ router.post('/register', register);
 router.post('/verify-email', verifyEmail);
 router.post('/resend-otp', resendOTP);
 router.post('/login', login);
+router.post('/refresh-token', refreshToken); // New route for refreshing
 
 // Protected routes
 router.get('/me', authMiddleware, getMe);

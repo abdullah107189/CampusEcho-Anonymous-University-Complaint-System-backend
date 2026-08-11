@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { errorMiddleware } from './shared/middleware/error.middleware';  
@@ -18,7 +19,8 @@ app.use(cors({
   origin: config.frontendUrl || 'http://localhost:3000',
   credentials: true,
 }));
-
+// Cookie parser
+app.use(cookieParser()); 
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
