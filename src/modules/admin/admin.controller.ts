@@ -1,69 +1,34 @@
-import { Request, Response, NextFunction } from 'express';
-import { 
-  registerUser, 
-  verifyOTP, 
-  resendOTP, 
-  loginUser, 
-  getCurrentUser 
-} from './auth.service'; 
-import { AuthRequest } from '../../shared/middleware/auth.middleware';
-import { loginSchema, registerSchema, resendOTPSchema, verifyOTPSchema } from '../auth/auth.validation';
+import { Response, NextFunction } from "express";
+import {
+  getComplaints,
+  getComplaintById,
+  getDashboardStats,
+} from "./admin.service";
+import {
+  updateComplaintStatus,
+  assignComplaint,
+  addNote,
+  deleteComplaint,
+} from "./admin.service";
+import { AuthRequest } from "../../shared/middleware/auth.middleware";
 
-export const register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const getAllComplaints = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
-    const validatedData = registerSchema.parse(req.body);
-    const result = await registerUser(validatedData);
-    
-    res.status(201).json({
-      success: true,
-      message: result.message,
-      data: { email: result.email },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+    const filters = {
+      status: req.query.status as any,
+      category: req.query.category as any,
+      search: req.query.search as string,
+      page: Number(req.query.page) || 1,
+      limit: Number(req.query.limit) || 10,
+    };
 
-export const verifyEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const validatedData = verifyOTPSchema.parse(req.body);
-    const result = await verifyOTP(validatedData.email, validatedData.otp);
-    
+    const result = await getComplaints(filters);
     res.status(200).json({
       success: true,
-      message: result.message,
-      data: {
-        user: result.user,
-        token: result.token,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const resendOTP = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const validatedData = resendOTPSchema.parse(req.body);
-    const result = await resendOTP(validatedData.email);
-    
-    res.status(200).json({
-      success: true,
-      message: result.message,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const validatedData = loginSchema.parse(req.body);
-    const result = await loginUser(validatedData);
-    
-    res.status(200).json({
-      success: true,
-      message: 'Login successful',
       data: result,
     });
   } catch (error) {
@@ -71,29 +36,178 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
   }
 };
 
-export const getMe = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+export const getComplaint = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
-    if (!req.user) {
-      res.status(401).json({
-        success: false,
-        message: 'Not authenticated',
-      });
-      return;
-    }
-
-    const user = await getCurrentUser(req.user.id);
+    const { id } = req.params;
+    const complaint = await getComplaintById(id as string);
     res.status(200).json({
       success: true,
-      data: user,
+      data: complaint,
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const logout = async (req: Request, res: Response): Promise<void> => {
-  res.status(200).json({
-    success: true,
-    message: 'Logged out successfully',
-  });
+export const updateStatus = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      res.status(400).json({
+        success: false,
+        message: "Status required",
+      });
+      return;
+    }
+
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Not authenticated",
+      });
+      return;
+    }
+
+    const complaint = await updateComplaintStatus(
+      id as string,
+      status,
+      req.user.id,
+    );
+    res.status(200).json({
+      success: true,
+      message: "Status updated successfully",
+      data: complaint,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const assign = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { staffId } = req.body;
+
+    if (!staffId) {
+      res.status(400).json({
+        success: false,
+        message: "Staff ID required",
+      });
+      return;
+    }
+    if (typeof id !== "string") {
+      res.status(400).json({
+        success: false,
+        message: "Invalid complaint ID",
+      });
+      return;
+    }
+
+    const complaint = await assignComplaint(id, staffId);
+    res.status(200).json({
+      success: true,
+      message: "Complaint assigned successfully",
+      data: complaint,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createNote = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    if (!content) {
+      res.status(400).json({
+        success: false,
+        message: "Note content required",
+      });
+      return;
+    }
+
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Not authenticated",
+      });
+      return;
+    }
+    if (typeof id !== "string") {
+      res.status(400).json({
+        success: false,
+        message: "Invalid complaint ID",
+      });
+      return;
+    }
+
+    const note = await addNote(id, content, req.user.id);
+    res.status(200).json({
+      success: true,
+      message: "Note added successfully",
+      data: note,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removeComplaint = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    if (typeof id !== "string") {
+      res.status(400).json({
+        success: false,
+        message: "Invalid complaint ID",
+      });
+      return;
+    }
+
+    await deleteComplaint(id);
+    res.status(200).json({
+      success: true,
+      message: "Complaint deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const dashboard = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const stats = await getDashboardStats();
+    res.status(200).json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
