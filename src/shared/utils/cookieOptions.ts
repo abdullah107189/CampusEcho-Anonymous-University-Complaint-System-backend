@@ -19,7 +19,7 @@ export const getRefreshCookieOptions = (): CookieOptions => {
     httpOnly: true,
     secure: isProduction,
     sameSite: 'lax',
-    path: '/api/auth/refresh-token', // Only sent to refresh endpoint
+    path: '/', // Only sent to refresh endpoint
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   };
 };

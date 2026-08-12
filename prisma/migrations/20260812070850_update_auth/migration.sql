@@ -1,38 +1,14 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('admin', 'staff');
 
-  - You are about to drop the `Complaint` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Note` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `StatusHistory` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
+-- CreateEnum
+CREATE TYPE "Category" AS ENUM ('Academic', 'Facilities', 'Administrative', 'Hostel', 'Transport', 'IT_Services', 'Library', 'Sports', 'Cafeteria', 'Other');
 
-*/
--- DropForeignKey
-ALTER TABLE "Complaint" DROP CONSTRAINT "Complaint_assignedToId_fkey";
+-- CreateEnum
+CREATE TYPE "Status" AS ENUM ('Pending', 'Under_Review', 'Investigating', 'Resolved', 'Rejected');
 
--- DropForeignKey
-ALTER TABLE "Note" DROP CONSTRAINT "Note_addedById_fkey";
-
--- DropForeignKey
-ALTER TABLE "Note" DROP CONSTRAINT "Note_complaintId_fkey";
-
--- DropForeignKey
-ALTER TABLE "StatusHistory" DROP CONSTRAINT "StatusHistory_changedById_fkey";
-
--- DropForeignKey
-ALTER TABLE "StatusHistory" DROP CONSTRAINT "StatusHistory_complaintId_fkey";
-
--- DropTable
-DROP TABLE "Complaint";
-
--- DropTable
-DROP TABLE "Note";
-
--- DropTable
-DROP TABLE "StatusHistory";
-
--- DropTable
-DROP TABLE "User";
+-- CreateEnum
+CREATE TYPE "Priority" AS ENUM ('Low', 'Medium', 'High', 'Urgent');
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -45,6 +21,7 @@ CREATE TABLE "users" (
     "isVerified" BOOLEAN NOT NULL DEFAULT false,
     "otp" TEXT,
     "otpExpiry" TIMESTAMP(3),
+    "refreshToken" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

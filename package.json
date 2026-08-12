@@ -8,7 +8,7 @@
     "dev:app": "bun --watch src/app.ts",
     "start": "bun src/server.ts",
     "build": "bun build src/server.ts --outdir dist",
-    "seed": "bun src/seed/admin.seeder.ts",
+    "seed": "bun src/modules/seed/admin.seeder.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"
   },
