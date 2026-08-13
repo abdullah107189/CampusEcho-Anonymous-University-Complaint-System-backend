@@ -24,8 +24,10 @@ import {
 
 import { prisma } from "../../../lib/prisma";
 
-const ACCESS_TOKEN_MAX_AGE = 10 * 1000; // 10 seconds
-const REFRESH_TOKEN_MAX_AGE = 10 * 60 * 1000; // 10 minutes
+
+// For production:
+ export const ACCESS_TOKEN_MAX_AGE = 15 * 60 * 1000; // 15 minutes
+ export const REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const setAuthCookies = (
   res: Response,
