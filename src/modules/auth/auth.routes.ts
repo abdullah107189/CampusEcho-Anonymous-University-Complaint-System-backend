@@ -17,7 +17,7 @@ router.post('/register', register);
 router.post('/verify-email', verifyEmail);
 router.post('/resend-otp', resendOTP);
 router.post('/login', login);
-router.post('/refresh-token', refreshToken); // New route for refreshing
+router.post('/refresh-token', refreshToken);  
 
 // Protected routes
 router.get('/me', authMiddleware, getMe);

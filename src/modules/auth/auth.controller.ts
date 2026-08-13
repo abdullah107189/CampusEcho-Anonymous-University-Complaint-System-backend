@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+
 import {
   registerUser,
   verifyOTP,
@@ -6,48 +7,85 @@ import {
   getCurrentUser,
   resendOTP as resendOTPService,
   refreshAccessToken,
-  logoutUser,
 } from "./auth.service";
+
 import {
   registerSchema,
   loginSchema,
   verifyOTPSchema,
   resendOTPSchema,
 } from "./auth.validation";
+
 import { AuthRequest } from "../../shared/middleware/auth.middleware";
 import {
   getCookieOptions,
   getRefreshCookieOptions,
 } from "../../shared/utils/cookieOptions";
+
 import { prisma } from "../../../lib/prisma";
 
+const ACCESS_TOKEN_MAX_AGE = 10 * 1000; // 10 seconds
+const REFRESH_TOKEN_MAX_AGE = 10 * 60 * 1000; // 10 minutes
+
+const setAuthCookies = (
+  res: Response,
+  accessToken: string,
+  refreshToken?: string,
+): void => {
+  res.cookie("accessToken", accessToken, {
+    ...getCookieOptions(),
+    maxAge: ACCESS_TOKEN_MAX_AGE,
+  });
+
+  if (refreshToken) {
+    res.cookie("refreshToken", refreshToken, {
+      ...getRefreshCookieOptions(),
+      maxAge: REFRESH_TOKEN_MAX_AGE,
+    });
+  }
+};
+
+const clearAuthCookies = (res: Response): void => {
+  res.clearCookie("accessToken", getCookieOptions());
+  res.clearCookie("refreshToken", getRefreshCookieOptions());
+};
+
+/**
+ * Register
+ */
 export const register = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const validatedData = registerSchema.parse(req.body);
-    const result = await registerUser(validatedData);
+    const data = registerSchema.parse(req.body);
+    const result = await registerUser(data);
 
     res.status(201).json({
       success: true,
       message: result.message,
-      data: { email: result.email },
+      data: {
+        email: result.email,
+      },
     });
   } catch (error) {
     next(error);
   }
 };
 
+/**
+ * Verify email OTP
+ */
 export const verifyEmail = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const validatedData = verifyOTPSchema.parse(req.body);
-    const result = await verifyOTP(validatedData.email, validatedData.otp);
+    const data = verifyOTPSchema.parse(req.body);
+
+    const result = await verifyOTP(data.email, data.otp);
 
     res.status(200).json({
       success: true,
@@ -62,15 +100,18 @@ export const verifyEmail = async (
   }
 };
 
+/**
+ * Resend OTP
+ */
 export const resendOTP = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const validatedData = resendOTPSchema.parse(req.body);
+    const data = resendOTPSchema.parse(req.body);
 
-    const result = await resendOTPService(validatedData.email);
+    const result = await resendOTPService(data.email);
 
     res.status(200).json({
       success: true,
@@ -81,39 +122,24 @@ export const resendOTP = async (
   }
 };
 
+/**
+ * Login
+ */
 export const login = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
-    console.log("🔐 ===== LOGIN CONTROLLER =====");
-    const validatedData = loginSchema.parse(req.body);
-    const result = await loginUser(validatedData);
+    const data = loginSchema.parse(req.body);
 
-    console.log("✅ Login successful for:", result.user.email);
-    console.log("🔑 Access Token exists:", !!result.accessToken);
-    console.log("🔑 Refresh Token exists:", !!result.refreshToken);
+    const result = await loginUser(data);
 
-    // ✅ Set cookies
-    const cookieOptions = getCookieOptions();
-    const refreshCookieOptions = getRefreshCookieOptions();
-
-    // Access Token - 10 seconds
-    res.cookie("accessToken", result.accessToken, {
-      ...cookieOptions,
-      maxAge: 10 * 1000, // 10 seconds
-    });
-    console.log("✅ Access token cookie set (10s)");
-
-    // Refresh Token - 10 minutes
-    res.cookie("refreshToken", result.refreshToken, {
-      ...refreshCookieOptions,
-      maxAge: 10 * 60 * 1000, // 10 minutes
-    });
-    console.log("✅ Refresh token cookie set (10min)");
-
-    console.log("✅ Cookies set successfully");
+    setAuthCookies(
+      res,
+      result.accessToken,
+      result.refreshToken,
+    );
 
     res.status(200).json({
       success: true,
@@ -123,106 +149,80 @@ export const login = async (
       },
     });
   } catch (error) {
-    console.error("❌ Login error:", error);
     next(error);
   }
 };
 
-
-export const refreshToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try { 
+/**
+ * Refresh access token
+ */
+export const refreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
     const refreshToken = req.cookies?.refreshToken;
-    
+
     if (!refreshToken) {
-      console.log('❌ No refresh token');
       res.status(401).json({
         success: false,
-        message: 'Refresh token required',
-        code: 'REFRESH_REQUIRED',
+        message: "Refresh token required",
+        code: "REFRESH_REQUIRED",
       });
       return;
     }
 
     const result = await refreshAccessToken(refreshToken);
-    
-    // ✅ Set new access token
-    const cookieOptions = getCookieOptions();
-    res.cookie('accessToken', result.accessToken, {
-      ...cookieOptions,
-      maxAge: 10 * 1000, // 10 seconds
-    });
-    console.log('✅ New access token set in cookie');
-    
-    // ✅ If using refresh token rotation, set new refresh token too
-    // if (result.refreshToken) {
-    //   res.cookie('refreshToken', result.refreshToken, {
-    //     ...cookieOptions,
-    //     maxAge: 10 * 60 * 1000,
-    //   });
-    //   console.log('✅ New refresh token set in cookie');
-    // }
-    
+
+    setAuthCookies(res, result.accessToken);
+
     res.status(200).json({
       success: true,
-      message: 'Token refreshed successfully',
+      message: "Token refreshed successfully",
       data: {
         user: result.user,
       },
     });
-  } catch (error: any) {
-    console.error('❌ Refresh error:', error.message);
-    res.status(401).json({
-      success: false,
-      message: error.message || 'Invalid refresh token',
-      code: 'REFRESH_FAILED',
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-
-export const logout = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+/**
+ * Logout
+ */
+export const logout = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
-    console.log('🚪 ===== LOGOUT =====');
-    
-    // ✅ Clear refresh token from database
     if (req.user) {
-      console.log('👤 Clearing refresh token for user:', req.user.email);
       await prisma.user.update({
-        where: { id: req.user.id },
-        data: { refreshToken: null },
+        where: {
+          id: req.user.id,
+        },
+        data: {
+          refreshToken: null,
+        },
       });
-      console.log('✅ Refresh token cleared from database');
     }
-    
-    // ✅ Clear cookies
-    const isProduction = process.env.NODE_ENV === 'production';
-    res.clearCookie('accessToken', {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: 'lax',
-      path: '/',
-    });
-    res.clearCookie('refreshToken', {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: 'lax',
-      path: '/',
-    });
-    console.log('✅ Cookies cleared');
-    
+
+    clearAuthCookies(res);
+
     res.status(200).json({
       success: true,
-      message: 'Logged out successfully',
+      message: "Logged out successfully",
     });
   } catch (error) {
-    console.error('❌ Logout error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Logout failed',
-    });
+    next(error);
   }
 };
 
+/**
+ * Get current user
+ */
 export const getMe = async (
   req: AuthRequest,
   res: Response,
@@ -238,6 +238,7 @@ export const getMe = async (
     }
 
     const user = await getCurrentUser(req.user.id);
+
     res.status(200).json({
       success: true,
       data: user,
